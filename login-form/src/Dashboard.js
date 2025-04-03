@@ -43,7 +43,7 @@ function Dashboard({ onLogout, user }) {
       <div className="items-grid">
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
-            <div key={item.id} className="item-card">
+            <div key={item.id} className="item-card" onClick={() => navigate("/buy", { state: { item } })}>
               <h3>{item.title}</h3>
               <p>{item.price}</p>
             </div>
