@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /farmers/{docId} {
+      allow read, write: if true;  // Open for testing (change for production)
+    }
+    match /ads/{docId} {
+      allow read, write: if true;  // Open for testing (change for production)
+    }
+  }
+}

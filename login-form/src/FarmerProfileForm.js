@@ -81,6 +81,7 @@ const FarmerProfileForm = () => {
     
     try {
       await addDoc(collection(db, "farmers"), profileData);
+      console.log("Farmer Profile Data:", profileData);
       alert("Farmer Profile Saved!");
 
       // Redirect to FarmerProductList with profile data
@@ -88,7 +89,8 @@ const FarmerProfileForm = () => {
 
     } catch (error) {
       console.error("Error saving farmer profile:", error);
-      alert("Failed to save farmer profile!");
+      console.error("Error saving farmer profile:", error);
+      alert("Failed to save farmer profile! Check console for details.");
     }
   };
 

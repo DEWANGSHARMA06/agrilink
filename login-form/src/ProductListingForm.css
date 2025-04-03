@@ -1,0 +1,17 @@
+/* Styles for Product Listing Form */
+.product-form-container {
+  margin: 20px;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-form label {
+  margin-bottom: 10px;
+}
+
+.product-list {
+  margin-top: 20px;
+}
