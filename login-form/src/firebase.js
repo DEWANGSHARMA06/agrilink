@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
 // 🔥 Your Firebase Config
@@ -24,5 +28,33 @@ if (typeof window !== "undefined") {
   analytics = getAnalytics(app);
 }
 
+/**
+ * 🛒 Function to Add Product to Firestore
+ * @param {Object} productData - Product details
+ */
+const addProductToFirestore = async (productData) => {
+  try {
+    const adsCollection = collection(db, "ads");
+    const docRef = await addDoc(adsCollection, {
+      ...productData,
+      createdAt: serverTimestamp(),
+    });
+
+    console.log("Product listed with ID:", docRef.id);
+    return docRef.id; // Returning the document ID (optional)
+  } catch (error) {
+    console.error("Error adding product:", error);
+    throw error; // Handle errors in the calling function
+  }
+};
+
 // ✅ Export Firebase Services
-export { app, auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, analytics };
+export {
+  app,
+  auth,
+  db,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  analytics,
+  addProductToFirestore, // 🆕 Exporting new function
+};

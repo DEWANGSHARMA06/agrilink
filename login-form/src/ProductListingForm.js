@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './ProductListingForm.css';
+import { db } from './firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const ProductListingForm = ({ farmerProfile }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     productName: '',
@@ -31,17 +35,48 @@ const ProductListingForm = ({ farmerProfile }) => {
     });
   };
 
-  const handleSubmitAll = () => {
-    console.log('Farmer:', farmerProfile);
-    console.log('Products:', products);
-    // Store products in local storage or a global state management solution
-    localStorage.setItem('products', JSON.stringify(products));
-    alert('Products submitted successfully! Products are now visible on the dashboard.');
+  const handleSubmitAll = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    console.log('Farmer Profile:', farmerProfile); // Debugging log
+
+    // Validate farmerProfile
+    if (!farmerProfile || !farmerProfile.farmerName) {
+      setSubmitError('Error: Farmer profile is missing essential details.');
+      console.error('Farmer profile is undefined or incomplete:', farmerProfile);
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const adsCollection = collection(db, 'ads');
+
+      // Submitting each product in the list
+      for (const product of products) {
+        const productData = {
+          ...product,
+          farmerName: farmerProfile.farmerName,
+          contactNumber: farmerProfile.contactNumber || 'N/A',
+          createdAt: serverTimestamp(),
+        };
+
+        await addDoc(adsCollection, productData);
+      }
+
+      alert('Products submitted successfully! Your ads are now live.');
+      setProducts([]); // Clear the product list after successful submission
+    } catch (error) {
+      console.error('Firestore submission error:', error);
+      setSubmitError(`Failed to submit products: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="product-form-container">
-      <h2>Product Listing for {farmerProfile.farmerName}</h2>
+      <h2>Product Listing for {farmerProfile?.farmerName || 'Unknown Farmer'}</h2>
       <form onSubmit={handleAddProduct} className="product-form">
         <label>
           Product Name:
@@ -86,7 +121,10 @@ const ProductListingForm = ({ farmerProfile }) => {
               </li>
             ))}
           </ul>
-          <button onClick={handleSubmitAll}>Submit All Products</button>
+          <button onClick={handleSubmitAll} disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit All Products'}
+          </button>
+          {submitError && <p className="error-message">{submitError}</p>}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
@@ -10,31 +10,47 @@ function Dashboard({ onLogout, user }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fetchAds = async () => {
-      try {
-        const adsCollection = await getDocs(collection(db, "ads"));
-        const adsList = adsCollection.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setItems(adsList);
-      } catch (error) {
-        console.error("Error fetching ads:", error);
-      }
-    };
+    if (!user || !user.email) {
+      console.warn("User not logged in or missing email.");
+      return;
+    }
 
-    fetchAds();
-  }, []);
+    const adsCollection = collection(db, "ads");
+    const q = query(adsCollection);
 
-  const filteredItems = category === "All" ? items : items.filter((item) => item.category === category);
+    // 🔄 Real-time data fetching
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const adsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setItems(adsList);
+    });
+
+    return () => unsubscribe(); // Cleanup on unmount
+  }, [user]);
+
+  // 🛑 Filter by category
+  const filteredItems =
+    category === "All" ? items : items.filter((item) => item.category === category);
 
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h2>Welcome, {user.email}!</h2>
-        <button onClick={onLogout} className="logout-btn">Logout</button>
+        <h2>Welcome, {user?.email || "Guest"}!</h2>
+        <button onClick={onLogout} className="logout-btn">
+          Logout
+        </button>
       </header>
 
       <div className="categories">
-        {["All", "Grains & Pulses", "Fertilizers", "Seeds", "Farming Medicines"].map((cat) => (
-          <button key={cat} className={category === cat ? "active" : ""} onClick={() => setCategory(cat)}>
+        {["All", "Grains & Pulses", "Fertilizers", "Seeds", "Farming Medicines","Fruits"].map((cat) => (
+          <button
+            key={cat}
+            className={category === cat ? "active" : ""}
+            onClick={() => setCategory(cat)}
+          >
             {cat}
           </button>
         ))}
@@ -43,9 +59,14 @@ function Dashboard({ onLogout, user }) {
       <div className="items-grid">
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
-            <div key={item.id} className="item-card" onClick={() => navigate("/buy", { state: { item } })}>
-              <h3>{item.title}</h3>
-              <p>{item.price}</p>
+            <div
+              key={item.id}
+              className="item-card"
+              onClick={() => navigate("/buy", { state: { item } })}
+            >
+              <h3>{item.productName || "Unnamed Product"}</h3>
+              <p>₹{item.price || "N/A"} per Kg</p>
+              <p>{item.category || "No Category"}</p>
             </div>
           ))
         ) : (
@@ -53,7 +74,9 @@ function Dashboard({ onLogout, user }) {
         )}
       </div>
 
-      <button className="sell-btn" onClick={() => navigate("/sell")}>+ बेचें (Sell)</button>
+      <button className="sell-btn" onClick={() => navigate("/sell")}>
+        + बेचें (Sell)
+      </button>
     </div>
   );
 }
