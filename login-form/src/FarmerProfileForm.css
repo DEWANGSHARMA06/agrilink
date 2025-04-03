@@ -1,0 +1,60 @@
+.profile-form-container {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #f9fff4;
+    border: 2px solid #4caf50;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 0 15px rgba(0, 128, 0, 0.1);
+  }
+  
+  .profile-form h2 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 20px;
+  }
+  
+  .profile-form label {
+    display: block;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .profile-form input,
+  .profile-form select,
+  .profile-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .profile-form button {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .profile-form button:hover {
+    background-color: #43a047;
+  }
+  
+  .location-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .map-container {
+    margin-top: 20px;
+    border: 2px solid #4caf50;
+    border-radius: 10px;
+    overflow: hidden;
+  }
