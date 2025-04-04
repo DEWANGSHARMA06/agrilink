@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
@@ -17,7 +18,7 @@ L.Icon.Default.mergeOptions({
 const FarmerProfileForm = () => {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
-    farmerName: "",
+    email: "",
     contactNumber: "",
     farmAddress: "",
     liveLocation: "",
@@ -27,6 +28,18 @@ const FarmerProfileForm = () => {
     certifications: "",
     paymentOptions: "",
   });
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setProfileData(prev => ({
+          ...prev,
+          email: user.email
+        }));
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -98,10 +111,13 @@ const FarmerProfileForm = () => {
     <div className="profile-form-container">
       <h2>Farmer Profile</h2>
       <form onSubmit={handleSubmit} className="profile-form">
-        <label>
-          Farmer Name:
-          <input type="text" name="farmerName" value={profileData.farmerName} onChange={handleChange} required />
-        </label>
+        <div className="email-field">
+          <label>Email:</label>
+          <div className="email-value">
+            {profileData.email || "Loading email..."}
+          </div>
+        </div>
+
 
         <label>
           Contact Number:
