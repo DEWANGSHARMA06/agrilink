@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
@@ -17,9 +18,15 @@ L.Icon.Default.mergeOptions({
 const FarmerProfileForm = () => {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
-    farmerName: "",
+    email: "",
     contactNumber: "",
-    farmAddress: "",
+    farmAddress: {
+      streetName: "",
+      landmark: "",
+      pincode: "",
+      city: "",
+      state: ""
+    },
     liveLocation: "",
     mapLocation: { lat: 20.5937, lng: 78.9629 }, // Default: India center
     logisticsAvailable: "",
@@ -27,6 +34,18 @@ const FarmerProfileForm = () => {
     certifications: "",
     paymentOptions: "",
   });
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setProfileData(prev => ({
+          ...prev,
+          email: user.email
+        }));
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -98,20 +117,101 @@ const FarmerProfileForm = () => {
     <div className="profile-form-container">
       <h2>Farmer Profile</h2>
       <form onSubmit={handleSubmit} className="profile-form">
-        <label>
-          Farmer Name:
-          <input type="text" name="farmerName" value={profileData.farmerName} onChange={handleChange} required />
-        </label>
+        <div className="email-field">
+          <label>Email:</label>
+          <div className="email-value">
+            {profileData.email || "Loading email..."}
+          </div>
+        </div>
+
 
         <label>
           Contact Number:
           <input type="tel" name="contactNumber" value={profileData.contactNumber} onChange={handleChange} required />
         </label>
 
-        <label>
-          Farm Address:
-          <input type="text" name="farmAddress" value={profileData.farmAddress} onChange={handleChange} required />
-        </label>
+        <div className="address-section">
+          <h4>Farm Address</h4>
+          <label>
+            Street Name:
+            <input
+              type="text"
+              name="streetName"
+              value={profileData.farmAddress.streetName}
+              onChange={(e) => setProfileData(prev => ({
+                ...prev,
+                farmAddress: {
+                  ...prev.farmAddress,
+                  streetName: e.target.value
+                }
+              }))}
+              required
+            />
+          </label>
+          <label>
+            Landmark:
+            <input
+              type="text"
+              name="landmark"
+              value={profileData.farmAddress.landmark}
+              onChange={(e) => setProfileData(prev => ({
+                ...prev,
+                farmAddress: {
+                  ...prev.farmAddress,
+                  landmark: e.target.value
+                }
+              }))}
+            />
+          </label>
+          <label>
+            Pincode:
+            <input
+              type="text"
+              name="pincode"
+              value={profileData.farmAddress.pincode}
+              onChange={(e) => setProfileData(prev => ({
+                ...prev,
+                farmAddress: {
+                  ...prev.farmAddress,
+                  pincode: e.target.value
+                }
+              }))}
+              required
+            />
+          </label>
+          <label>
+            City:
+            <input
+              type="text"
+              name="city"
+              value={profileData.farmAddress.city}
+              onChange={(e) => setProfileData(prev => ({
+                ...prev,
+                farmAddress: {
+                  ...prev.farmAddress,
+                  city: e.target.value
+                }
+              }))}
+              required
+            />
+          </label>
+          <label>
+            State:
+            <input
+              type="text"
+              name="state"
+              value={profileData.farmAddress.state}
+              onChange={(e) => setProfileData(prev => ({
+                ...prev,
+                farmAddress: {
+                  ...prev.farmAddress,
+                  state: e.target.value
+                }
+              }))}
+              required
+            />
+          </label>
+        </div>
 
         <label>
           Live GPS Location:
