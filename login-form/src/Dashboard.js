@@ -31,17 +31,15 @@ function Dashboard({ onLogout, user }) {
     return () => unsubscribe();
   }, [user]);
 
-  // 🛑 Filter by category & search
+  // 🛑 Filter items based on category & search term
   const filteredItems = items
-    .filter((item) => category === "All" || item.category === category)
-    .filter((item) =>
-      item.productName?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    .filter((item) => category === "All" || (category === "Other" ? !["Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].includes(item.category) : item.category === category))
+    .filter((item) => item.productName?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h2>Welcome </h2>
+        <h2>Welcome</h2>
         <button onClick={onLogout} className="logout-btn">
           Logout
         </button>
@@ -56,18 +54,34 @@ function Dashboard({ onLogout, user }) {
         className="search-bar"
       />
 
+      {/* 🔹 Category Filter Buttons */}
+      {/* 🔹 Category Filter Buttons */}
       <div className="categories">
-        {["All", "Grains " ,"Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].map((cat) => (
-          <button
-            key={cat}
-            className={category === cat ? "active" : ""}
-            onClick={() => setCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+    {["All", "Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits", "Other"].map((cat) => (
+      <button
+        key={cat}
+        className={category === cat ? "active" : ""}
+        onClick={() => setCategory(cat)}
+      >
+        {cat}
+      </button>
+    ))}
+</div>
 
+// =======
+//         {["All", "Grains " ,"Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].map((cat) => (
+//           <button
+//             key={cat}
+//             className={category === cat ? "active" : ""}
+//             onClick={() => setCategory(cat)}
+//           >
+//             {cat}
+//           </button>
+//         ))}
+//       </div>
+// >>>>>>> main
+
+      {/* 🛒 Display Filtered Items */}
       <div className="items-grid">
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (

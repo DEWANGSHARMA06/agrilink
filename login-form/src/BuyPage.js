@@ -14,11 +14,23 @@ function BuyPage() {
   return (
     <div className="buy-container">
       <button onClick={() => navigate(-1)} className="back-btn">← Back</button>
-      <h2>{item.title}</h2>
-      <img src={item.image} alt={item.title} className="item-image"/>
-      <p>Price: {item.price}</p>
-      <p>Category: {item.category}</p>
-      <button className="buy-btn">Buy Now</button>
+      
+      <h2>{item.productName}</h2>
+      {item.image && <img src={item.image} alt={item.productName} className="item-image" />}
+
+      <p><strong>Price:</strong> ₹{item.price} per Kg</p>
+      <p><strong>Quantity:</strong> {item.quantity} Kg</p>
+      <p><strong>Category:</strong> {item.category}</p>
+      <p><strong>Description:</strong> {item.description || "No description provided."}</p>
+      
+      <h3>Farmer Details</h3>
+      <p><strong>Name:</strong> {item.farmerName || "Unknown"}</p>
+      <p><strong>Contact:</strong> {item.contactNumber || "Not provided"}</p>
+
+      {/* <button className="buy-btn">Buy Now</button> */}
+      <button className="chat-btn" onClick={() => navigate("/chat", { state: { farmerId: item.farmerId } })}>
+        Chat with Farmer
+      </button>
     </div>
   );
 }
