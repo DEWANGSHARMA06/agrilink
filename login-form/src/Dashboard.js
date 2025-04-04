@@ -7,6 +7,7 @@ import "./Dashboard.css";
 function Dashboard({ onLogout, user }) {
   const navigate = useNavigate();
   const [category, setCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -18,7 +19,6 @@ function Dashboard({ onLogout, user }) {
     const adsCollection = collection(db, "ads");
     const q = query(adsCollection);
 
-    // 🔄 Real-time data fetching
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const adsList = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -28,12 +28,15 @@ function Dashboard({ onLogout, user }) {
       setItems(adsList);
     });
 
-    return () => unsubscribe(); // Cleanup on unmount
+    return () => unsubscribe();
   }, [user]);
 
-  // 🛑 Filter by category
-  const filteredItems =
-    category === "All" ? items : items.filter((item) => item.category === category);
+  // 🛑 Filter by category & search
+  const filteredItems = items
+    .filter((item) => category === "All" || item.category === category)
+    .filter((item) =>
+      item.productName?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div className="dashboard-container">
@@ -44,8 +47,17 @@ function Dashboard({ onLogout, user }) {
         </button>
       </header>
 
+      {/* 🔍 Search Bar */}
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-bar"
+      />
+
       <div className="categories">
-        {["All", "Grains & Pulses", "Fertilizers", "Seeds", "Farming Medicines","Fruits"].map((cat) => (
+        {["All", "Grains & Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].map((cat) => (
           <button
             key={cat}
             className={category === cat ? "active" : ""}
