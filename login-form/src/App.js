@@ -1,4 +1,3 @@
-
 import './App.css';
 import { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -7,7 +6,8 @@ import AuthForm from "./AuthForm";
 import Dashboard from "./Dashboard";
 import SellPage from "./SellPage";
 import BuyPage from "./BuyPage";
-import FarmerProductList from "./FarmerProductList"; // Import FarmerProductList
+import FarmerProductList from "./FarmerProductList";
+import ChatPage from "./ChatPage"; // Import ChatPage
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -29,16 +29,26 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Authentication */}
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <AuthForm />} />
-        <Route path="/dashboard" element={user ? <Dashboard onLogout={handleLogout} user={user} /> : <Navigate to="/" />} />
-        <Route path="/sell" element={user ? <SellPage /> : <Navigate to="/" />} />
-        <Route path="/buy" element={user ? <BuyPage /> : <Navigate to="/" />} />
-        <Route path="/farmer-product-list" element={user ? <FarmerProductList /> : <Navigate to="/" />} /> {/* Added FarmerProductList Route */}
-        <Route path="*" element={<Navigate to="/" />} />
+        
+        {/* Protected Routes */}
+        {user ? (
+          <>
+            <Route path="/dashboard" element={<Dashboard onLogout={handleLogout} user={user} />} />
+            <Route path="/sell" element={<SellPage user={user} />} />
+            <Route path="/buy" element={<BuyPage user={user} />} />
+            <Route path="/farmer-product-list" element={<FarmerProductList user={user} />} />
+            <Route path="/chat" element={<ChatPage user={user} />} />
+          </>
+        ) : (
+          <>
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        )}
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
