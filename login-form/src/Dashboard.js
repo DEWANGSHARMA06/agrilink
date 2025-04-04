@@ -56,16 +56,17 @@ function Dashboard({ onLogout, user }) {
 
       {/* 🔹 Category Filter Buttons */}
       <div className="categories">
-        {["All", "Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits", "Other"].map((cat) => (
-          <button
-            key={cat}
-            className={category === cat ? "active" : ""}
-            onClick={() => setCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+    {["All", "Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits", "Other"].map((cat) => (
+      <button
+        key={cat}
+        className={category === cat ? "active" : ""}
+        onClick={() => setCategory(cat)}
+      >
+        {cat}
+      </button>
+    ))}
+</div>
+
 
       {/* 🛒 Display Filtered Items */}
       <div className="items-grid">
