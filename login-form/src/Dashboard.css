@@ -3,63 +3,72 @@
     font-family: "Poppins", sans-serif;
     padding: 20px;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #e0f7e9, #ffffff); /* Light green to white */
+    background: linear-gradient(to bottom right, #0fd1ef, #f35608); /* Smooth green gradient */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Header Section */
+/* Header Section with Glassmorphism */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, #006400, #008000);
+    background: rgba(244, 106, 31, 0.85); /* Slightly transparent green */
+    backdrop-filter: blur(10px);
     color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 18px 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 1200px;
 }
 
 .dashboard-header h2 {
     margin: 0;
     font-weight: 600;
-    font-size: 22px;
+    font-size: 24px;
 }
 
 /* Logout Button */
 .dashboard-header button {
-    background-color: #ff4d4d;
+    background: linear-gradient(135deg, #ff4d4d, #6e0808);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 12px 20px;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: bold;
     font-size: 14px;
-    transition: background 0.3s ease, transform 0.2s;
+    transition: all 0.3s ease;
 }
 
 .dashboard-header button:hover {
-    background-color: #cc0000;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
     transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
 }
 
 /* Category Tabs */
 .category-tabs {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 15px;
     margin: 20px 0;
     flex-wrap: wrap;
+    padding: 10px;
 }
 
 .category-tabs button {
     background-color: #ffffff;
     border: 2px solid #008000;
-    padding: 10px 15px;
+    padding: 12px 18px;
     cursor: pointer;
-    border-radius: 25px;
+    border-radius: 30px;
     font-weight: 500;
     font-size: 14px;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 128, 0, 0.1);
 }
 
 .category-tabs button:hover,
@@ -67,7 +76,8 @@
     background: linear-gradient(135deg, #006400, #008000);
     color: white;
     border-color: #008000;
-    box-shadow: 0 3px 6px rgba(0, 128, 0, 0.3);
+    box-shadow: 0 3px 8px rgba(0, 128, 0, 0.3);
+    transform: scale(1.1);
 }
 
 /* Items Grid */
@@ -77,27 +87,32 @@
     gap: 25px;
     justify-content: center;
     padding: 25px;
+    width: 100%;
+    max-width: 1200px;
 }
 
-/* Item Card */
+/* Item Card - Glassmorphism Style */
 .item-card {
-    background: white;
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 18px;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    border: 2px solid transparent;
 }
 
 .item-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #008000;
+    box-shadow: 0 6px 18px rgba(0, 128, 0, 0.3);
 }
 
 .item-card img {
     width: 100%;
-    height: 220px;
+    height: 230px;
     object-fit: cover;
     border-radius: 10px;
 }
@@ -111,7 +126,7 @@
 .item-card p {
     margin: 5px 0 0;
     font-size: 16px;
-    color: #333;
+    color: #444;
 }
 
 /* Sell Button */
@@ -121,19 +136,31 @@
     right: 20px;
     background: linear-gradient(135deg, #ffcc00, #ff9900);
     color: white;
-    padding: 12px 22px;
+    padding: 16px 28px;
     border: none;
     border-radius: 50px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 }
 
 .sell-button:hover {
     background: linear-gradient(135deg, #ff9900, #ff6600);
     transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(255, 165, 0, 0.4);
+}
+
+/* Subtle Floating Effect */
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0px); }
+}
+
+.sell-button {
+    animation: floating 2s infinite ease-in-out;
 }
 
 /* Responsive Design */
@@ -155,6 +182,6 @@
 
     .sell-button {
         font-size: 14px;
-        padding: 10px 15px;
+        padding: 12px 18px;
     }
 }

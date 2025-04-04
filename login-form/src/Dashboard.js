@@ -38,7 +38,7 @@ function Dashboard({ onLogout, user }) {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h2>Welcome, {user?.email || "Guest"}!</h2>
+        <h2>Welcome </h2>
         <button onClick={onLogout} className="logout-btn">
           Logout
         </button>
