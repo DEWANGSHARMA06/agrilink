@@ -55,7 +55,6 @@ function Dashboard({ onLogout, user }) {
       />
 
       {/* 🔹 Category Filter Buttons */}
-      {/* 🔹 Category Filter Buttons */}
       <div className="categories">
     {["All", "Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits", "Other"].map((cat) => (
       <button
@@ -68,18 +67,6 @@ function Dashboard({ onLogout, user }) {
     ))}
 </div>
 
-// =======
-//         {["All", "Grains " ,"Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].map((cat) => (
-//           <button
-//             key={cat}
-//             className={category === cat ? "active" : ""}
-//             onClick={() => setCategory(cat)}
-//           >
-//             {cat}
-//           </button>
-//         ))}
-//       </div>
-// >>>>>>> main
 
       {/* 🛒 Display Filtered Items */}
       <div className="items-grid">
