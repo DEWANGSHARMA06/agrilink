@@ -20,13 +20,7 @@ const FarmerProfileForm = () => {
   const [profileData, setProfileData] = useState({
     email: "",
     contactNumber: "",
-    farmAddress: {
-      streetName: "",
-      landmark: "",
-      pincode: "",
-      city: "",
-      state: ""
-    },
+    farmAddress: "",
     liveLocation: "",
     mapLocation: { lat: 20.5937, lng: 78.9629 }, // Default: India center
     logisticsAvailable: "",
@@ -130,88 +124,10 @@ const FarmerProfileForm = () => {
           <input type="tel" name="contactNumber" value={profileData.contactNumber} onChange={handleChange} required />
         </label>
 
-        <div className="address-section">
-          <h4>Farm Address</h4>
-          <label>
-            Street Name:
-            <input
-              type="text"
-              name="streetName"
-              value={profileData.farmAddress.streetName}
-              onChange={(e) => setProfileData(prev => ({
-                ...prev,
-                farmAddress: {
-                  ...prev.farmAddress,
-                  streetName: e.target.value
-                }
-              }))}
-              required
-            />
-          </label>
-          <label>
-            Landmark:
-            <input
-              type="text"
-              name="landmark"
-              value={profileData.farmAddress.landmark}
-              onChange={(e) => setProfileData(prev => ({
-                ...prev,
-                farmAddress: {
-                  ...prev.farmAddress,
-                  landmark: e.target.value
-                }
-              }))}
-            />
-          </label>
-          <label>
-            Pincode:
-            <input
-              type="text"
-              name="pincode"
-              value={profileData.farmAddress.pincode}
-              onChange={(e) => setProfileData(prev => ({
-                ...prev,
-                farmAddress: {
-                  ...prev.farmAddress,
-                  pincode: e.target.value
-                }
-              }))}
-              required
-            />
-          </label>
-          <label>
-            City:
-            <input
-              type="text"
-              name="city"
-              value={profileData.farmAddress.city}
-              onChange={(e) => setProfileData(prev => ({
-                ...prev,
-                farmAddress: {
-                  ...prev.farmAddress,
-                  city: e.target.value
-                }
-              }))}
-              required
-            />
-          </label>
-          <label>
-            State:
-            <input
-              type="text"
-              name="state"
-              value={profileData.farmAddress.state}
-              onChange={(e) => setProfileData(prev => ({
-                ...prev,
-                farmAddress: {
-                  ...prev.farmAddress,
-                  state: e.target.value
-                }
-              }))}
-              required
-            />
-          </label>
-        </div>
+        <label>
+          Farm Address:
+          <input type="text" name="farmAddress" value={profileData.farmAddress} onChange={handleChange} required />
+        </label>
 
         <label>
           Live GPS Location:
