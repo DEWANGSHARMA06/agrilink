@@ -1,12 +1,19 @@
+/* Global Reset & Smooth Transitions */
+* {
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
 /* General Styling */
 .dashboard-container {
     font-family: "Poppins", sans-serif;
     padding: 20px;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #0fd1ef, #f35608); /* Smooth green gradient */
+    background: linear-gradient(135deg, #a884fc, #dff7ff); /* Softer professional gradient */
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #333;
 }
 
 /* Header Section with Glassmorphism */
@@ -14,7 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(244, 106, 31, 0.85); /* Slightly transparent green */
+    background: rgba(244, 106, 31, 0.85);
     backdrop-filter: blur(10px);
     color: white;
     padding: 18px 25px;
@@ -22,12 +29,14 @@
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
     width: 100%;
     max-width: 1200px;
+    flex-wrap: wrap;
 }
 
 .dashboard-header h2 {
     margin: 0;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 28px;
+    letter-spacing: 0.5px;
 }
 
 /* Logout Button */
@@ -49,6 +58,23 @@
     box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
 }
 
+/* Search Bar */
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 18px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+    outline: none;
+}
+
+.search-bar:focus {
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.4);
+}
+
 /* Category Tabs */
 .category-tabs {
     display: flex;
@@ -56,7 +82,7 @@
     gap: 15px;
     margin: 20px 0;
     flex-wrap: wrap;
-    padding: 10px;
+    padding: 50px;
 }
 
 .category-tabs button {
@@ -67,8 +93,25 @@
     border-radius: 30px;
     font-weight: 500;
     font-size: 14px;
-    transition: all 0.3s ease;
     box-shadow: 0 2px 6px rgba(0, 128, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.category-tabs button::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.category-tabs button:hover::after,
+.category-tabs button.active::after {
+    width: 100%;
 }
 
 .category-tabs button:hover,
@@ -91,7 +134,7 @@
     max-width: 1200px;
 }
 
-/* Item Card - Glassmorphism Style */
+/* Item Card */
 .item-card {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
@@ -102,6 +145,23 @@
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     border: 2px solid transparent;
+    position: relative;
+}
+
+.item-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 128, 0, 0.05);
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.item-card:hover::before {
+    opacity: 1;
 }
 
 .item-card:hover {
@@ -119,14 +179,14 @@
 
 .item-card h4 {
     margin: 12px 0 5px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .item-card p {
     margin: 5px 0 0;
-    font-size: 16px;
-    color: #444;
+    font-size: 15px;
+    color: #333;
 }
 
 /* Sell Button */
@@ -143,7 +203,7 @@
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
+    animation: floating 2s infinite ease-in-out;
 }
 
 .sell-button:hover {
@@ -159,8 +219,18 @@
     100% { transform: translateY(0px); }
 }
 
-.sell-button {
-    animation: floating 2s infinite ease-in-out;
+/* Footer */
+.dashboard-footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    font-size: 14px;
+    color: #333;
+    margin-top: auto;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 /* Responsive Design */
@@ -184,13 +254,8 @@
         font-size: 14px;
         padding: 12px 18px;
     }
-}
 
-.search-bar {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+    .dashboard-header h2 {
+        font-size: 24px;
+    }
+}

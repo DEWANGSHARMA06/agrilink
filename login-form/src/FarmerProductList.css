@@ -1,4 +1,5 @@
 /* src/ProductListingForm.css */
+
 .product-form-container {
     max-width: 600px;
     margin: 20px auto;
@@ -57,4 +58,7 @@
     margin-bottom: 10px;
     padding: 10px;
     border-radius:5px;
+  }
+  h2{
+    text-align: center;
   }

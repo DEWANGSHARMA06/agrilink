@@ -54,10 +54,11 @@ import { useNavigate } from "react-router-dom";
 import { db } from "./firebase";
 import { collection, addDoc } from "firebase/firestore";
 import FarmerProfileForm from "./FarmerProfileForm";
+import './SellPage.css';
 
 export default function SellPage() {
   const navigate = useNavigate();
-  const [farmerProfile, setFarmerProfile] = useState(null);
+  const [, setFarmerProfile] = useState(null);
 
   // Handle Farmer Profile Submission
   const handleProfileSubmit = async (profileData) => {
@@ -77,11 +78,13 @@ export default function SellPage() {
   };
 
   return (
-    <div className="sell-container">
-      <h2>अपना विज्ञापन डालें (Post Your Ad)</h2>
-      
-      {/* Farmer Profile Form */}
-      <FarmerProfileForm onProfileSubmit={handleProfileSubmit} />
+    <div className="sell-page">
+      <div className="sell-container">
+        <h2 className="sell-title">अपना विज्ञापन डालें (Post Your Ad)</h2>
+        
+        {/* Farmer Profile Form */}
+        <FarmerProfileForm onProfileSubmit={handleProfileSubmit} />
+      </div>
     </div>
   );
 }

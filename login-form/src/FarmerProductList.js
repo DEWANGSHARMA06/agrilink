@@ -39,12 +39,11 @@ const FarmerProductList = () => {
 
   // Callback function to redirect after adding product
   const handleProductAdded = () => {
-    navigate("/dashboard"); // 🚀 Redirect to Dashboard
+    navigate("/dashboard"); // Redirect to Dashboard
   };
-
   return (
     <div>
-      <h2>Product Listings for {farmerProfile.farmerName}</h2>
+      <h2 >Product Listings for {farmerProfile.farmerName}</h2>
       <p>Contact: {farmerProfile.contactNumber}</p>
       <p>Farm Address: {farmerProfile.farmAddress}</p>
       <ProductListingForm farmerProfile={farmerProfile} onProductAdded={handleProductAdded} />
