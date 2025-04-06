@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 import "./Dashboard.css";
 
 function Dashboard({ onLogout, user }) {
@@ -38,12 +39,7 @@ function Dashboard({ onLogout, user }) {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h2>Welcome</h2>
-        <button onClick={onLogout} className="logout-btn">
-          Logout
-        </button>
-      </header>
+      <Header title="Welcome" onLogout={onLogout} />
 
       {/* 🔍 Search Bar */}
       <input

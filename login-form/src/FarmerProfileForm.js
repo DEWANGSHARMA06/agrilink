@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "./firebase";
+import Header from "./Header";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -144,7 +145,7 @@ const FarmerProfileForm = () => {
 
   return (
     <div className="profile-form-container">
-      <h2>Farmer Profile</h2>
+      <Header title="Farmer Profile" />
       <form onSubmit={handleSubmit} className="profile-form">
 
 
