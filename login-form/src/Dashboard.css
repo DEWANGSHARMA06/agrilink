@@ -84,7 +84,10 @@
     flex-wrap: wrap;
     padding: 50px;
 }
+.second-class{
+    margin-right: 4px;
 
+}
 .category-tabs button {
     background-color: #ffffff;
     border: 2px solid #008000;
