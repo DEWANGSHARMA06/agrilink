@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "./firebase";
+import Header from "./Header";
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "firebase/firestore";
 import "./ChatPage.css";
 
@@ -43,7 +44,7 @@ function ChatPage({ user }) {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">Chat with Farmer</div>
+      <Header title="Chat with Farmer" />
       <div className="chat-messages">
         {messages.map((msg) => (
           <div key={msg.id} className={`message ${msg.sender === user.uid ? "sent" : "received"}`}>

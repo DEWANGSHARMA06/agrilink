@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 import "./Dashboard.css";
 
 function Dashboard({ onLogout, user }) {
@@ -38,12 +39,7 @@ function Dashboard({ onLogout, user }) {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h2>Welcome</h2>
-        <button onClick={onLogout} className="logout-btn">
-          Logout
-        </button>
-      </header>
+      <Header title="Welcome" onLogout={onLogout} />
 
       {/* 🔍 Search Bar */}
       <input
@@ -55,31 +51,19 @@ function Dashboard({ onLogout, user }) {
       />
 
       {/* 🔹 Category Filter Buttons */}
-      {/* 🔹 Category Filter Buttons */}
       <div className="categories">
     {["All", "Grains", "Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits", "Other"].map((cat) => (
-      <button
-        key={cat}
-        className={category === cat ? "active" : ""}
-        onClick={() => setCategory(cat)}
-      >
-        {cat}
-      </button>
+     <button 
+     key={cat}
+     className={`${category === cat ? "active" : ""} second-class`} 
+     onClick={() => setCategory(cat)}
+   >
+     {cat}
+   </button>
+   
     ))}
 </div>
 
-// =======
-//         {["All", "Grains " ,"Pulses", "Fertilizers", "Seeds", "Farming Medicines", "Fruits"].map((cat) => (
-//           <button
-//             key={cat}
-//             className={category === cat ? "active" : ""}
-//             onClick={() => setCategory(cat)}
-//           >
-//             {cat}
-//           </button>
-//         ))}
-//       </div>
-// >>>>>>> main
 
       {/* 🛒 Display Filtered Items */}
       <div className="items-grid">

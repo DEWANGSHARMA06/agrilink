@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./ProductListingForm.css";
 import { db } from "./firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import Header from "./Header";
 
 const categoryOptions = {
   "Grains": ["Rice", "Wheat", "Barley", "Maize", "Oats"],
@@ -102,7 +103,7 @@ const ProductListingForm = ({ farmerProfile, onProductAdded }) => {
 
   return (
     <div className="product-form-container">
-      <h2>Product Listing for {farmerProfile?.farmerName || "Unknown Farmer"}</h2>
+      <Header title={`Product Listing for ${farmerProfile?.farmerName || "Unknown Farmer"}`} />
 
       <form onSubmit={handleAddProduct} className="product-form">
         <label>

@@ -1,3 +1,6 @@
+body{
+  margin: 0;
+}
 /* Full-page background with gradient */
 .auth-container {
   display: flex;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "./firebase";
+import Header from "./Header";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -18,6 +19,7 @@ L.Icon.Default.mergeOptions({
 const FarmerProfileForm = () => {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
+    name: "",
     email: "",
     contactNumber: "",
     farmAddress: "",
@@ -89,35 +91,75 @@ const FarmerProfileForm = () => {
     return <Marker position={[profileData.mapLocation.lat, profileData.mapLocation.lng]} />;
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  const validatePhoneNumber = (phone) => {
+    const regex = /^[0-9]{10}$/;
+    return regex.test(phone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    try {
-      await addDoc(collection(db, "farmers"), profileData);
-      console.log("Farmer Profile Data:", profileData);
-      alert("Farmer Profile Saved!");
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-      // Redirect to FarmerProductList with profile data
-      navigate("/farmer-product-list", { state: { farmerProfile: profileData } });
+    // Validate contact number
+    if (!validatePhoneNumber(profileData.contactNumber)) {
+      setSubmitError("Please enter a valid 10-digit phone number");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Prepare complete profile data with all required fields
+      const completeProfile = {
+        ...profileData,
+        farmerName: profileData.name || "Farmer",
+        createdAt: new Date(),
+        isComplete: true
+      };
+
+      await addDoc(collection(db, "farmers"), completeProfile);
+      console.log("Farmer Profile Data:", completeProfile);
+
+      // Redirect with complete profile data
+      navigate("/farmer-product-list", {
+        state: {
+          farmerProfile: completeProfile,
+          successMessage: "Profile saved successfully!"
+        }
+      });
 
     } catch (error) {
       console.error("Error saving farmer profile:", error);
-      console.error("Error saving farmer profile:", error);
-      alert("Failed to save farmer profile! Check console for details.");
+      setSubmitError(
+        error.code === 'permission-denied' 
+          ? "You don't have permission to save profiles"
+          : "Failed to save profile. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="profile-form-container">
-      <h2>Farmer Profile</h2>
+      <Header title="Farmer Profile" />
       <form onSubmit={handleSubmit} className="profile-form">
-        <div className="email-field">
-          <label>Email:</label>
-          <div className="email-value">
-            {profileData.email || "Loading email..."}
-          </div>
-        </div>
 
+
+        <label>
+          Full Name:
+          <input
+            type="text"
+            name="name"
+            value={profileData.name}
+            onChange={handleChange}
+            required
+            placeholder="Enter your name"
+          />
+        </label>
 
         <label>
           Contact Number:
@@ -186,7 +228,13 @@ const FarmerProfileForm = () => {
           </select>
         </label>
 
-        <button type="submit">Save Farmer Profile</button>
+        {submitError && <div className="error-message">{submitError}</div>}
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Saving..." : "Save Farmer Profile"}
+        </button>
       </form>
     </div>
   );
